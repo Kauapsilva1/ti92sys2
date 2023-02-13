@@ -56,7 +56,7 @@ namespace ti92class
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = "insert produtos (descricao, unidade, codbar, preco, desconto, descontinuado)" +
-                "values ('"+Descricao+"','"+Unidade+"',"+Preco+",'"+Desconto+"',0)";
+                "values ('"+Descricao+"','"+Unidade+"','"+CodBar+"',"+Preco+",'" + Desconto+"',0)";
             cmd.ExecuteNonQuery();
             cmd.CommandText = "select @@identity";
             Id = Convert.ToInt32(cmd.ExecuteScalar());

@@ -26,9 +26,24 @@ namespace ti92app
             txtId.Text = produto.Id.ToString();
         }
 
-        private void label7_Click(object sender, EventArgs e)
-        {
 
+        private void FrmProdutos_Load(object sender, EventArgs e)
+        {
+            var lista = Produto.Listar();
+            int linha = 0;
+            foreach (var item in lista)
+            {
+                dtgLista.Rows.Add();
+                dtgLista.Rows[linha].Cells[0].Value = item.Id;
+                dtgLista.Rows[linha].Cells[1].Value = item.CodBar;
+                dtgLista.Rows[linha].Cells[2].Value = item.Descricao;
+                dtgLista.Rows[linha].Cells[3].Value = item.Unidade;
+                dtgLista.Rows[linha].Cells[4].Value = item.Preco;
+                dtgLista.Rows[linha].Cells[5].Value = item.Desconto;
+                dtgLista.Rows[linha].Cells[6].Value = item.Descontinuado;
+                linha++;
+
+            }
         }
     }
 }

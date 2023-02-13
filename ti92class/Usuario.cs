@@ -49,18 +49,11 @@ namespace ti92class
             }
             public static List<Usuario> Listar()
             {
-                // 0 - entrega uma lista de todos os níveis (cria um espaço do tipo lista)
                 List<Usuario> Lista = new List<Usuario>();
-                // Logica que recupera todos os níveis da tabela
-                // 1 - Abrir conexão no banco de dados
                 var cmd = Banco.Abrir();
-                // 2 - Definir Tipo de comando SQL (text/store procedure)
                 cmd.CommandType = CommandType.Text;
-                // 3 -Atribuir comando SQL (texto)
                 cmd.CommandText = "select * from usuarios order by nome asc";
-                // 4 - Executar o comando e armazenar o retorno do banco em um objeto MysqlDataReader
                 var dr = cmd.ExecuteReader();
-                // 5 - prencher o List com o retorno do banco, se houver
                 while (dr.Read()) //enquanto houver proximo registro
                 {
                     Lista.Add
