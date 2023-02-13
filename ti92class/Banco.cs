@@ -24,8 +24,7 @@ namespace ti92class
                 throw;
             }
             
-            
-
+          
             return cmd;
         }
     }

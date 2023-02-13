@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ti92class;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ti92app
 {
@@ -145,8 +147,41 @@ namespace ti92app
                 }
                 int id = int.Parse(txtIdUsuario.Text);
                 var usuario = Usuario.ObterPorId(id);
-                txtNomeNivel.Text = usuario.Nome;
-                txtSiglaNivel.Text = usuario.Sigla;
+                txtNomeUsuario.Text = usuario.Nome;
+                txtEmailUsuario.Text = usuario.Email;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       // private void btnInserirUsuario_Click(object sender, EventArgs e)
+       // {
+         //   Usuario usuario = new Usuario( txtNomeUsuario.Text, txtEmailUsuario.Text, txtSenhaUsuario.Text, CheckAtivo);
+          //  usuario.Inserir();
+          //  txtIdUsuario.Text = usuario.Id.ToString();
+          //  AtualizaListBox();
+           // MessageBox.Show("Usuario inserido com sucesso \n ID: " + usuario.Id.ToString());
+           /// txtIdUsuario.Clear();
+           // txtNomeUsuario.Clear();
+           // txtEmailUsuario.Clear();
+           // txtSenhaUsuario.Focus();
+
+        //}
+        
+
+        private void cmbNivelUsuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Nivel.ObterPorId (Convert.ToInt32(cmbNivel));
+
+        }
+
         }
     }
-}
+

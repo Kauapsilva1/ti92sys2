@@ -16,10 +16,11 @@ namespace ti92class
         public string Email { get; set; }
         public string Senha { get; set; }
 
+        public  Nivel Nivel { get; set; }
+
         public bool Ativo { get; set; }
 
-        public Usuario(int v, string v1) { }
-        public Usuario(string _nome, string _email,Nivel _nivel, string _senha, bool _ativo)
+        public Usuario(string _nome, string _email, Nivel _nivel, string _senha, bool _ativo)
         {
             Nome= _nome;
             Email= _email;
@@ -34,8 +35,9 @@ namespace ti92class
             Email = _email;
             Senha = _senha;
         }
+        
 
-            public void Inserir()
+        public void Inserir()
             {
                 // gravar um novo nivel na tabela niveis
                 var cmd = Banco.Abrir();
@@ -45,10 +47,10 @@ namespace ti92class
                 cmd.CommandText = "select @@identity";
                 Id = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            public static List<Nivel> Listar()
+            public static List<Usuario> Listar()
             {
                 // 0 - entrega uma lista de todos os níveis (cria um espaço do tipo lista)
-                List<Nivel> Lista = new List<Nivel>();
+                List<Usuario> Lista = new List<Usuario>();
                 // Logica que recupera todos os níveis da tabela
                 // 1 - Abrir conexão no banco de dados
                 var cmd = Banco.Abrir();
@@ -62,12 +64,12 @@ namespace ti92class
                 while (dr.Read()) //enquanto houver proximo registro
                 {
                     Lista.Add
-                    (new Usuario(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), dr.GetString(3), dr.GetBoolean(4)));
+                    (new Usuario(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), Nivel.ObterPorId(dr.GetInt32(3)), dr.GetString(4), dr.GetBoolean(5)));
                 }
                 // retorna a lista prenchida
                 return Lista;
             }
-            public static Nivel ObterPorId(int _id)
+            public static Usuario ObterPorId(int _id)
             {
                 Usuario usuario = null;
                 var cmd = Banco.Abrir();
@@ -79,8 +81,9 @@ namespace ti92class
                     usuario.Id = dr.GetInt32(0);
                     usuario.Nome = dr.GetString(1);
                     usuario.Email = dr.GetString(2);
-                    usuario.Senha = dr.GetString(3);
-                    usuario.Ativo = dr.GetBoolean(4);
+                    Nivel.ObterPorId(dr.GetInt32(3));
+                    usuario.Senha = dr.GetString(4);
+                    usuario.Ativo = dr.GetBoolean(5);
                 }
 
                 return usuario;
@@ -90,7 +93,7 @@ namespace ti92class
             {
                 var cmd = Banco.Abrir();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "update niveis set nome = '" +
+                cmd.CommandText = "update usuarios set nome = '" +
                     nivel.Nome + "', sigla = '" + nivel.Sigla +
                     "' where id = " + nivel.Id;
 
@@ -103,24 +106,22 @@ namespace ti92class
                 bool result = cmd.ExecuteNonQuery() == 1 ? true : false;
                 return result;
             }
-            public static List<Nivel> BuscarPorNome(string _parte)
+            public static List<Usuario> BuscarPorNome(string _parte)
             {
                 var cmd = Banco.Abrir();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "select * from usuarios where nome like '%" + _parte + "%' order by nome;";
                 var dr = cmd.ExecuteReader();
-                List<Nivel> lista = new List<Nivel>();
+                List<Usuario> lista = new List<Usuario>();
                 while (dr.Read())
                 {
-                    lista.Add(new Usuario(
-                             dr.GetInt32(0), dr.GetString(1), dr.GetString(2)
-                        )
-                    );
+                lista.Add(new Usuario(
+                         dr.GetInt32(0), dr.GetString(1), dr.GetString(2), Nivel.ObterPorId(dr.GetInt32(3)), dr.GetString(4), dr.GetBoolean(5)));
                 }
                 return lista;
             }
 
         }
     }
-}
+
 

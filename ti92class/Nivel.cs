@@ -64,7 +64,7 @@ namespace ti92class
         }
         public static Nivel ObterPorId(int _id)
         {
-            Nivel nivel = new Nivel();
+            Nivel nivel = null;
             var cmd = Banco.Abrir();
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = "select * from niveis where id =" + _id;
