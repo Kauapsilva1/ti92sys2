@@ -13,15 +13,14 @@ namespace ti92class
 
         public int Id { get; set; }
         public string Nome { get; set; }
-        public int Cpf { get; set; }
+        public string Cpf { get; set; }
         public string Email { get; set; }
-        public string Senha { get; set; }
 
         public DateTime Data { get; set; }
 
         public bool Ativo { get; set; }
 
-        public Cliente(string _nome, int _cpf, string _email, DateTime _data, bool _ativo)
+        public Cliente(string _nome, string _cpf, string _email, DateTime _data, bool _ativo)
         {
             Nome = _nome;
             Cpf = _cpf;
@@ -29,7 +28,7 @@ namespace ti92class
             Data = _data;
             Ativo = _ativo;
         }
-        public Cliente(int _id,string _nome, int _cpf, string _email, DateTime _data, bool _ativo)
+        public Cliente(int _id,string _nome, string _cpf, string _email, DateTime _data, bool _ativo)
         {
             Id = _id;
             Nome = _nome;
@@ -50,9 +49,9 @@ namespace ti92class
             cmd.CommandText = "select @@identity";
             Id = Convert.ToInt32(cmd.ExecuteScalar());
         }
-        public static List<Usuario> Listar()
+        public static List<Cliente> Listar()
         {
-            List<Usuario> Lista = new List<Usuario>();
+            List<Cliente> Lista = new List<Cliente>();
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = "select * from clientes order by nome asc";
@@ -60,59 +59,59 @@ namespace ti92class
             while (dr.Read()) //enquanto houver proximo registro
             {
                 Lista.Add
-                (new Usuario(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), Nivel.ObterPorId(dr.GetInt32(3)), dr.GetString(4), dr.GetBoolean(5)));
+                (new Cliente(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), (dr.GetString(3)), dr.GetDateTime(4), dr.GetBoolean(5)));
             }
-            // retorna a lista prenchida
             return Lista;
         }
-        public static Usuario ObterPorId(int _id)
+        public static Cliente ObterPorId(int _id)
         {
-            Usuario usuario = null;
+            Cliente cliente = null;
             var cmd = Banco.Abrir();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "select * from niveis where id =" + _id;
+            cmd.CommandText = "select * from clientes where id =" + _id;
             var dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                usuario.Id = dr.GetInt32(0);
-                usuario.Nome = dr.GetString(1);
-                usuario.Email = dr.GetString(2);
-                Nivel.ObterPorId(dr.GetInt32(3));
-                usuario.Senha = dr.GetString(4);
-                usuario.Ativo = dr.GetBoolean(5);
+                cliente.Id = dr.GetInt32(0);
+                cliente.Nome = dr.GetString(1);
+                cliente.Cpf = dr.GetString(2);
+                cliente.Email = dr.GetString(3);
+                cliente.Data = dr.GetDateTime(4);
+                cliente.Ativo = dr.GetBoolean(5);
             }
 
-            return usuario;
+            return cliente;
 
         }
-        public static void Atualizar(Nivel nivel)
+        public static void Atualizar(Cliente cliente)
         {
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update usuarios set nome = '" +
-                nivel.Nome + "', sigla = '" + nivel.Sigla +
-                "' where id = " + nivel.Id;
+            cmd.CommandText = "update clientes set nome = '" +
+                cliente.Nome + "', cpf = '" + cliente.Cpf +
+                "', '"+ cliente.Email +"', cpf = '" + cliente.Cpf +
+                "', '"+cliente.Data+"', '"+cliente.Ativo+"'  where id = " + cliente.Id;
 
         }
         public bool Excluir(int _id)
         {
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "delet from niveis where id = " + _id;
+            cmd.CommandText = "deleted from clientes where id = " + _id;
             bool result = cmd.ExecuteNonQuery() == 1 ? true : false;
             return result;
         }
-        public static List<Usuario> BuscarPorNome(string _parte)
+        public static List<Cliente> BuscarPorNome(string _parte)
         {
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select * from usuarios where nome like '%" + _parte + "%' order by nome;";
+            cmd.CommandText = "select * from clientes where nome like '%" + _parte + "%' order by nome;";
             var dr = cmd.ExecuteReader();
-            List<Usuario> lista = new List<Usuario>();
+            List<Cliente> lista = new List<Cliente>();
             while (dr.Read())
             {
-                lista.Add(new Usuario(
-                         dr.GetInt32(0), dr.GetString(1), dr.GetString(2), Nivel.ObterPorId(dr.GetInt32(3)), dr.GetString(4), dr.GetBoolean(5)));
+                lista.Add(new Cliente(
+                         dr.GetInt32(0), dr.GetString(1), dr.GetString(2), dr.GetString(3), dr.GetDateTime(4), dr.GetBoolean(5)));
             }
             return lista;
         }

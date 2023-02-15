@@ -45,5 +45,39 @@ namespace ti92app
 
             }
         }
+
+        private void dtgLista_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //MessageBox.Show("cliquei na célula");
+            txtId.Text= dtgLista.Rows[e.RowIndex].Cells[0].Value.ToString();
+            txtCodBar.Text = dtgLista.Rows[e.RowIndex].Cells[1].Value.ToString();
+            txtDescricao.Text = dtgLista.Rows[e.RowIndex].Cells[2].Value.ToString();
+            cmbUnidade.Text = dtgLista.Rows[e.RowIndex].Cells[3].Value.ToString();
+            mskPreco.Text = dtgLista.Rows[e.RowIndex].Cells[4].Value.ToString();
+            mskDesconto.Text = dtgLista.Rows[e.RowIndex].Cells[5].Value.ToString();
+            chkDescontinuado.Checked = (bool)dtgLista.Rows[e.RowIndex].Cells[6].Value;
+            chkDescontinuado.Enabled = true;
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            Produto produto = new Produto(
+                int.Parse(txtId.Text),
+                txtDescricao.Text,
+                cmbUnidade.Text,
+                txtCodBar.Text,
+                double.Parse(mskPreco.Text),
+                double.Parse(mskDesconto.Text),
+                chkDescontinuado.Checked
+                );
+            produto.Atualizar();
+            MessageBox.Show("Produto Atualizado com sucesso");
+            FrmProdutos_Load(sender, e);
+        }
+
+        private void dtgLista_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            int id = (int)dtgLista.Rows[dtgLista.CurrentRow.Index].Cells[0].Value;
+        }
     }
 }

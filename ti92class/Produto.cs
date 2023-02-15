@@ -104,11 +104,11 @@ namespace ti92class
             }
             return produto;
         }
-        public  void Atualizar(Produto produto)
+        public  void Atualizar()
         {
             var cmd = Banco.Abrir();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update produtos set descricao = '" + Descricao + "', unidade = '" + Unidade + "', codbar = '" + CodBar + "', preco ='" + Preco + "', desconto = '" + Desconto + "', decontinuado ='" + Descontinuado + " = where id = " + Id;
+            cmd.CommandText = "update produtos set descricao = '" + Descricao + "', unidade = '" + Unidade + "', codbar = '" + CodBar + "', preco =" + Preco + ", desconto = " + Desconto + ", descontinuado = " + Descontinuado + " where id = " + Id;
             cmd.ExecuteReader();
 
         }
